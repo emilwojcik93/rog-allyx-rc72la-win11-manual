@@ -2,17 +2,59 @@
 
 **Live docs:** https://emilwojcik93.github.io/rog-allyx-rc72la-win11-manual/
 
-Sources live in [`docs/`](docs/). Edit there, or preview locally (PowerShell: use the call operator `&` if `python` is not on `PATH`):
+Sources live in [`docs/`](docs/). This README uses **PowerShell** snippets with **`$RepoRoot`** so paths are generic. **Set it once** to wherever you actually put this repo (see below), or edit the **`Join-Path`** second argument to match your layout.
+
+## Get this repository
+
+1. **Download ZIP:** on GitHub use **Code → Download ZIP**, or clone with **`git`**.
+2. **Suggested folder:** extract or clone into **`$env:UserProfile\Downloads\rog-allyx-rc72la-win11-manual`** (create the `rog-allyx-rc72la-win11-manual` folder under **Downloads**, or rename into it after extract).
+
+**GitHub ZIP quirk:** the archive often unpacks to **`rog-allyx-rc72la-win11-manual-main`**. Either rename that folder to **`rog-allyx-rc72la-win11-manual`**, or keep the long name and **change `$RepoRoot`** in the snippets below so it points at your real directory.
+
+**Clone example** (matches the suggested folder name):
 
 ```powershell
-cd C:\DRIVERS\rog-allyx-rc72la-win11-manual
-& "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe" -m pip install -r requirements-docs.txt
-& "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe" -m mkdocs serve
+git clone https://github.com/emilwojcik93/rog-allyx-rc72la-win11-manual.git (Join-Path $env:UserProfile "Downloads\rog-allyx-rc72la-win11-manual")
 ```
 
-Open **http://127.0.0.1:8000/rog-allyx-rc72la-win11-manual/** (subpath matches GitHub Pages). To serve at the site root instead, temporarily comment out `site_url` in `mkdocs.yml` while editing locally.
+**Define the root** used by the rest of the commands (copy as-is if you followed the suggestion above):
 
-Optional: add **Python** and **Python\\Scripts** to your user `PATH` so `python` and `mkdocs` work without full paths.
+```powershell
+$RepoRoot = Join-Path $env:UserProfile "Downloads\rog-allyx-rc72la-win11-manual"
+```
+
+If your copy lives somewhere else, set **`$RepoRoot`** manually, for example:
+
+```powershell
+$RepoRoot = "D:\src\rog-allyx-rc72la-win11-manual"
+```
+
+## Local docs preview (MkDocs)
+
+From **PowerShell**, after **`$RepoRoot`** is set:
+
+```powershell
+Set-Location $RepoRoot
+python -m pip install -r (Join-Path $RepoRoot "requirements-docs.txt")
+python -m mkdocs serve -f (Join-Path $RepoRoot "mkdocs.yml")
+```
+
+If **`python`** is not on **`PATH`**, call your **`python.exe`** explicitly once (installer path varies), or add Python to **`PATH`**, then rerun the lines above.
+
+Open **http://127.0.0.1:8000/rog-allyx-rc72la-win11-manual/** (subpath matches GitHub Pages). To preview at site root, temporarily comment out **`site_url`** in **`mkdocs.yml`**.
+
+## WinUtil with this repo’s `winget.json`
+
+Same **`$RepoRoot`** as above. **`-Run`** applies the profile; omit it for a dry run per [WinUtil automation](https://winutil.christitus.com/userguide/automation/).
+
+```powershell
+$RepoRoot = Join-Path $env:UserProfile "Downloads\rog-allyx-rc72la-win11-manual"
+& ([ScriptBlock]::Create((irm "https://christitus.com/win"))) -Config (Join-Path $RepoRoot "winget.json") -Run
+```
+
+If **`winget.json`** moved, change the **`Join-Path`** argument or pass a string literal you trust.
+
+More detail: [docs/winget-profile.md](docs/winget-profile.md).
 
 ## Publish on GitHub Pages (first time)
 
