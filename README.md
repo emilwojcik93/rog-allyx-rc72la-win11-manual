@@ -6,7 +6,7 @@ This repository documents a **repeatable, command-by-command** workflow to:
 
 1. Obtain a legitimate **Windows 11** x64 image from Microsoft.
 2. Build a **MicroWin**-style image using the **[CodingWonders/MicroWin](https://github.com/CodingWonders/MicroWin)** project (continuation of MicroWin after removal from WinUtil).
-3. Download **ASUS** driver packages for **ROG Ally X RC72LA**, inject them offline with **DISM**, and deploy **`install.wim`** to a USB stick (**`E:\`** in examples).
+3. Download **ASUS** driver packages for **ROG Ally X RC72LA**, inject them offline with **DISM**, and deploy **`install.wim`** to a USB stick (**`E:\`** on the PC — on the Ally you need **USB-C** media, a **C→A adapter**, or a dock such as **Dell UD22**; see [docs/00-prerequisites.md](docs/00-prerequisites.md)).
 4. Finish setup on the handheld using **[G-Helper](https://github.com/seerge/g-helper)** for power, LEDs, fan/GPU modes, and driver update discovery — **not** Armoury Crate / MyASUS.
 
 **Why inject drivers?** The factory **ASUS Cloud Recovery** image is tuned for this hardware. Any other source (retail ISO, MicroWin, etc.) can hit **“Windows Setup could not install one or more boot-critical drivers”** at the **start** of Setup unless **WinPE / Setup** sees the right packages — service **`install.wim`** and usually **`sources\boot.wim`** (see [04-dism-offline-drivers.md](docs/04-dism-offline-drivers.md)).

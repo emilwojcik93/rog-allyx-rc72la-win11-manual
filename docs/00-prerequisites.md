@@ -16,8 +16,20 @@ New-Item -ItemType Directory -Force -Path "C:\DRIVERS"
 
 ## USB flash drive (install media)
 
-- In this repo, the mounted USB drive letter is **`E:\`**. Adjust every command if your letter differs.
+- In this repo, the mounted USB drive letter is **`E:\`** on the **PC that prepares** the stick. On the Ally X itself, the BIOS/boot menu will show whatever label the firmware assigns (often still a removable “USB” entry, not necessarily `E:`).
 - **`install.wim`** is often **larger than 4 GiB**. A **single FAT32-only** volume cannot store it. Typical **Rufus** Windows 11 layouts use **NTFS** (or a supported split layout). If copy fails, check filesystem and free space.
+
+### Physical connection on ROG Ally X (USB-C)
+
+The handheld’s **top port is USB-C**. A normal **USB-A** Windows installer stick will **not** plug in directly. Use one of:
+
+| Approach | Notes |
+|----------|--------|
+| **USB-C → USB-A adapter** (“OTG” style) + standard USB pendrive | Common and cheap; ensure the adapter supports **USB 3.x** and **data** (not charge-only). |
+| **USB-C flash drive** (native Type-C stick) | Simplest cable-wise; buy a known-good brand for sustained read during Setup. |
+| **Dock / hub with downstream USB-A** | Lets you attach a **USB-A installer** while docked. **UEFI must still list the stick as a boot device** — behavior varies by dock firmware. |
+
+**Real-world example:** this manual was validated using a **Dell Universal Dock UD22** (`USB-C` from the Ally into the dock, **USB-A** installer key in the dock’s USB port) so the handheld could boot external Windows media without a separate C-to-A dongle. Any **similar USB-C dock** may work, but if the BIOS **does not** show your USB installer, try a **direct C-to-A adapter** or **C-native** flash drive first to rule out dock boot quirks.
 
 ## Target device (ROG Ally X RC72LA)
 

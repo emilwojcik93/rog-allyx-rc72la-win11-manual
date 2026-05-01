@@ -2,6 +2,8 @@
 
 You **do not** need to rebuild a full ISO or re-run Rufus **only** to swap the OS image file, as long as the stick is already a valid Windows Setup layout.
 
+**On ROG Ally X:** the Ally does not have a built-in **USB-A** port. Use a **USB-C installer**, **USB-C → USB-A adapter + pendrive**, or a **USB-C dock** that exposes a bootable USB mass-storage device (see [00-prerequisites.md — Physical connection](00-prerequisites.md#physical-connection-on-rog-ally-x-usb-c)).
+
 ## 5.1 Confirm USB layout
 
 ```powershell
