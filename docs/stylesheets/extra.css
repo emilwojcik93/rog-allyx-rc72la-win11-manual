@@ -6,14 +6,16 @@
   }
 }
 
-/* Fluid type scale (rem + vw); titles intentionally smaller than before */
+/*
+  Footer nav type: rem + cqw (container query width) so title font tracks
+  each half-width cell. Titles live in .md-ellipsis (Material); keep one line.
+*/
 :root {
-  --footer-nav-label: clamp(0.42rem, 0.28rem + 0.45vw, 0.58rem);
-  --footer-nav-title: clamp(0.46rem, 0.3rem + 0.48vw, 0.62rem);
-  --footer-nav-pad-block: clamp(0.14rem, 0.1rem + 0.35vw, 0.32rem);
-  --footer-nav-pad-inline: clamp(0.35rem, 1.25vw, 0.9rem);
-  --footer-nav-gap: clamp(0.15rem, 0.5vw, 0.45rem);
-  --footer-row-gap: clamp(0.35rem, 1.5vw, 1rem);
+  --footer-nav-label: clamp(0.38rem, 0.26rem + 0.4vw, 0.55rem);
+  --footer-nav-pad-block: clamp(0.12rem, 0.08rem + 0.3vw, 0.28rem);
+  --footer-nav-pad-inline: clamp(0.2rem, 0.8vw, 0.65rem);
+  --footer-nav-gap: clamp(0.12rem, 0.4vw, 0.35rem);
+  --footer-col-gap: clamp(0.6rem, 3.5vw, 2.25rem);
 }
 
 /* Desktop: slide header + section tabs off-screen when scrolling down */
@@ -36,51 +38,99 @@
   }
 }
 
-/* Footer prev/next: wider row than default content grid */
-.md-footer .md-footer__inner {
-  max-width: min(100%, min(72rem, 96vw));
+/* Two equal columns across the full footer strip (uses empty center space) */
+.md-footer .md-footer__inner.md-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--footer-col-gap);
+  row-gap: var(--footer-nav-pad-block);
+  max-width: 100%;
   width: 100%;
-  margin-inline: auto;
-  gap: var(--footer-row-gap);
+  margin-inline: 0;
   padding-block: var(--footer-nav-pad-block);
-  padding-inline: clamp(0.35rem, 3vw, 1.35rem);
+  padding-inline: clamp(0.35rem, 4vw, 2rem);
 }
 
 .md-footer__link {
+  container-type: inline-size;
+  container-name: footnav;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   gap: var(--footer-nav-gap);
   padding-block: var(--footer-nav-pad-block);
   padding-inline: var(--footer-nav-pad-inline);
-  min-width: 0;
-  max-width: none;
-  font-size: var(--footer-nav-title);
-  line-height: 1.3;
-  /* Prefer whole words; break only when the column is still too narrow */
-  overflow-wrap: break-word;
-  word-break: normal;
+  line-height: 1.25;
+}
+
+.md-footer__link--next {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
 }
 
 .md-footer__title {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
   min-width: 0;
-  white-space: normal;
-  overflow: visible;
-  text-overflow: unset;
-  overflow-wrap: break-word;
-  word-break: normal;
+  align-items: flex-start;
+}
+
+.md-footer__link--next .md-footer__title {
+  align-items: flex-end;
+  text-align: right;
 }
 
 .md-footer__direction {
   font-size: var(--footer-nav-label);
-  line-height: 1.2;
+  line-height: 1.15;
   opacity: 0.78;
+  white-space: nowrap;
+}
+
+/* Page title: single line; font scales with link container (cqw) */
+.md-footer__title .md-ellipsis {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: clamp(0.34rem, 0.28rem + 1vw, 0.68rem);
+  line-height: 1.2;
+}
+
+@supports (font-size: 1cqw) {
+  .md-footer__title .md-ellipsis {
+    font-size: clamp(0.34rem, 0.12rem + 6.5cqw, 0.74rem);
+  }
 }
 
 .md-footer__link .md-footer__button.md-icon {
   flex-shrink: 0;
-  width: 1.15em;
-  height: 1.15em;
+  width: 1em;
+  height: 1em;
+  font-size: clamp(0.55rem, 0.35rem + 1.8cqw, 0.85rem);
 }
 
 .md-footer__link .md-footer__button.md-icon svg {
   width: 1em;
   height: 1em;
+}
+
+/* Step down title in very narrow half-footer cells */
+@container footnav (max-width: 14rem) {
+  .md-footer__title .md-ellipsis {
+    font-size: clamp(0.3rem, 0.1rem + 5.5cqw, 0.62rem);
+  }
+}
+
+@container footnav (max-width: 10rem) {
+  .md-footer__title .md-ellipsis {
+    font-size: clamp(0.28rem, 0.08rem + 5cqw, 0.55rem);
+  }
 }
