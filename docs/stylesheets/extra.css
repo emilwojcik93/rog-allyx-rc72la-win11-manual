@@ -52,42 +52,65 @@
   padding-inline: clamp(0.35rem, 4vw, 2rem);
 }
 
+/*
+  Prev / Next use the same column-gap and grid cross-axis alignment so
+  arrow-to-title spacing and vertical centering match on both sides.
+*/
 .md-footer__link {
   container-type: inline-size;
   container-name: footnav;
-  display: flex;
-  flex-direction: row;
+  display: grid;
   align-items: center;
+  column-gap: var(--footer-nav-gap);
   width: 100%;
   min-width: 0;
   max-width: 100%;
-  gap: var(--footer-nav-gap);
   padding-block: var(--footer-nav-pad-block);
   padding-inline: var(--footer-nav-pad-inline);
   line-height: 1.25;
 }
 
-/* Prev: DOM = icon, title → keep left. Next: DOM = title, icon → pack both to the right (do NOT use row-reverse: it pins the wrong edge and separates icon from text). */
+/* Prev: [ icon | title… ] */
 .md-footer__link--prev {
-  justify-content: flex-start;
+  grid-template-columns: auto minmax(0, 1fr);
+  justify-items: start;
 }
 
+.md-footer__link--prev .md-footer__button {
+  grid-column: 1;
+}
+
+.md-footer__link--prev .md-footer__title {
+  grid-column: 2;
+  min-width: 0;
+  width: 100%;
+}
+
+/* Next: [ …title | icon ] — same gap as Prev between title cluster and arrow */
 .md-footer__link--next {
-  flex-direction: row;
-  justify-content: flex-end;
+  grid-template-columns: minmax(0, 1fr) auto;
+  justify-items: end;
+}
+
+.md-footer__link--next .md-footer__title {
+  grid-column: 1;
+  justify-self: end;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.md-footer__link--next .md-footer__button {
+  grid-column: 2;
 }
 
 .md-footer__title {
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto;
   min-width: 0;
   align-items: flex-start;
-}
-
-.md-footer__link--next .md-footer__title {
-  align-items: flex-end;
-  text-align: right;
 }
 
 .md-footer__direction {
@@ -116,7 +139,10 @@
 }
 
 .md-footer__link .md-footer__button.md-icon {
-  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
   width: 1em;
   height: 1em;
   font-size: clamp(0.55rem, 0.35rem + 1.8cqw, 0.85rem);
