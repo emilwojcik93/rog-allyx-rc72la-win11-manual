@@ -33,13 +33,13 @@ This is a **minimal** path: custom USB install (not Cloud Recovery), **[G-Helper
 ## What you will do
 
 1. Obtain a legitimate **Windows 11 x64** image from Microsoft: [Download Windows 11](https://www.microsoft.com/en-us/software-download/windows11).
-2. Build a **MicroWin**-style image with **[CodingWonders/MicroWin](https://github.com/CodingWonders/MicroWin)** (continuation after MicroWin left WinUtil):
+2. Build a **MicroWin** image with **[CodingWonders/MicroWin](https://github.com/CodingWonders/MicroWin)**. This repo only documents the **upstream one-liner**; all other install paths and features are in **that** README / Releases:
 
    ```powershell
    powershell -ExecutionPolicy Bypass -Command "iwr -useb https://raw.githubusercontent.com/CodingWonders/MicroWin/refs/heads/main/Microwin.ps1 | iex"
    ```
 
-   Prefer the **release build** from the project page if you do not want `irm` / `iex` from raw GitHub.
+   See [docs/02-build-microwin.md](docs/02-build-microwin.md) for the short Ally-specific note.
 
 3. Prepare **ASUS** driver folders under `C:\DRIVERS`, inject with **DISM** into `install.wim` (and `boot.wim` if needed), copy the serviced WIM to USB. See the numbered docs below.
 

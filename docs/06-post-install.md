@@ -2,47 +2,23 @@
 
 ## 6.1 G-Helper
 
-Use **[G-Helper](https://github.com/seerge/g-helper)** for performance modes, GPU modes, fan curves, charge cap, display refresh, LEDs where supported, and **driver / BIOS links** for your model. Install **ASUS System Control Interface v3** from ASUS if G-Helper reports it missing.
+Use **[G-Helper](https://github.com/seerge/g-helper)** for power modes, GPU modes, fans, charge cap, display, LEDs where supported, and **driver / BIOS links** for your model. Install **ASUS System Control Interface v3** from ASUS if G-Helper reports it missing. **Behavior, updates, and troubleshooting** are covered in the **official G-Helper repository** (README and issues), not duplicated here.
 
 ## 6.2 Apps and tweaks (winget or WinUtil only)
 
-- **Individual packages:** prefer **`winget install …`** for well-known IDs.
-- **Bulk tweaker / installer profile:** use **WinUtil** with a JSON config. See [winget-profile.md](winget-profile.md) for this repo’s exported list and drift warning.
-
-Automation docs: [WinUtil - Automation](https://winutil.christitus.com/userguide/automation/).
-
-Dry run (no apply):
-
-```powershell
-& ([ScriptBlock]::Create((irm "https://christitus.com/win"))) -Config "C:\path\to\your-config.json"
-```
-
-Apply:
-
-```powershell
-& ([ScriptBlock]::Create((irm "https://christitus.com/win"))) -Config "C:\path\to\your-config.json" -Run
-```
-
-Keep personal configs **private** if they encode aggressive removals.
+- **Single packages:** use **`winget install …`** as documented by Microsoft / package publishers.
+- **Bulk profile:** use **[WinUtil](https://github.com/ChrisTitusTech/winutil)**. **Automation flags**, **`-Config` / `-Run`**, and **examples** are in [WinUtil automation](https://winutil.christitus.com/userguide/automation/). This repo only keeps a sample ID list in [winget-profile.md](winget-profile.md) and **`winget.json`** at the repo root; **do not treat this site as a second WinUtil manual.**
 
 ## 6.3 Optional: OpenSSH Server
 
-Not required for this guide. If you want remote PowerShell over SSH, enable **OpenSSH Server** (and firewall rules) through **WinUtil** optional features / tweaks rather than ad-hoc downloads. See WinUtil’s UI and documentation for the current toggle names.
+Not part of this minimal path. If you want it, use **WinUtil** optional features / toggles described in **WinUtil’s own docs** (names change between releases).
 
 ## 6.4 Name and address on the LAN
 
-Windows may show a **default computer name** until you change it under **Settings → System → About**.
-
-To see this device’s **IPv4** on the network (for example from another PC on the same Wi-Fi), on the handheld open **Windows Terminal** and run:
-
-```powershell
-ipconfig
-```
-
-Use the **Wireless LAN adapter Wi-Fi** IPv4 address. DHCP can change it after a lease renew.
+Rename the PC under **Settings → System → About** if you like. On the device, **Windows Terminal** → **`ipconfig`** shows the current **IPv4** (DHCP can change it).
 
 ## 6.5 Maintenance
 
-1. BIOS / MCU / PD firmware from ASUS when release notes matter.
-2. **G-Helper → Updates** for driver deltas.
-3. **Windows Update** for security and runtime payloads deferred by MicroWin.
+1. Firmware from **ASUS** when you care about the release notes.
+2. **G-Helper → Updates** for driver deltas (upstream project explains the flow).
+3. **Windows Update** for payloads deferred by a slim image.
