@@ -19,6 +19,10 @@ theme:
     - toc.follow
     # Optional: URL hash updates as you scroll past headings (shareable deep links).
     - navigation.tracking
+    # Bottom of page: previous / next doc in nav order (uses page titles from `nav`).
+    - navigation.footer
+    # Top tabs stay visible while scrolling (main sections always one click away).
+    - navigation.tabs.sticky
     - content.code.copy
     - search.suggest
 
