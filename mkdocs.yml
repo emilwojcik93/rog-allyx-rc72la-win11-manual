@@ -11,14 +11,23 @@ theme:
       primary: indigo
       accent: cyan
   features:
+    # Top bar: primary sections as tabs.
     - navigation.tabs
     - navigation.sections
+    # Wiki-style: current page headings in the left drawer; drawer scrolls to the active heading.
+    - toc.integrate
+    - toc.follow
+    # Optional: URL hash updates as you scroll past headings (shareable deep links).
+    - navigation.tracking
     - content.code.copy
     - search.suggest
 
 markdown_extensions:
   - pymdownx.superfences
   - tables
+  # Anchor links for headings (feeds the integrated TOC).
+  - toc:
+      permalink: true
 
 nav:
   - Home: index.md
