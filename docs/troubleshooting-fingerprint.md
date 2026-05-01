@@ -51,6 +51,7 @@ Start-Service WbioSrvc
 ## If you already installed the wrong package
 
 - After installing **EGIS**, run **Windows Update** optional drivers once.
+- To **remove unused FOCAL** (or other orphaned) packages from the **driver store**, use **Driver Store Explorer (RAPR)** — see [troubleshooting-driver-store-rapr.md](troubleshooting-driver-store-rapr.md) (`winget install lostindark.DriverStoreExplorer`, search `Focal` / `FtWbio`, delete or **force delete** if needed).
 - Avoid running **Snappy**-class bulk installers (project policy: use ASUS + G-Helper + Update).
 
 ## References

@@ -36,6 +36,7 @@ This repository documents a **repeatable, command-by-command** workflow to:
 | [docs/07-remote-audit-summary.md](docs/07-remote-audit-summary.md) | Pointer to local audit artifacts |
 | [docs/references.md](docs/references.md) | External guides and tools |
 | [docs/troubleshooting-fingerprint.md](docs/troubleshooting-fingerprint.md) | Focal vs Egis fingerprint, “no scanner” fix |
+| [docs/troubleshooting-driver-store-rapr.md](docs/troubleshooting-driver-store-rapr.md) | Driver Store Explorer (RAPR), `winget`, force remove (e.g. Dolby) |
 
 **Out of scope (by design)**
 
