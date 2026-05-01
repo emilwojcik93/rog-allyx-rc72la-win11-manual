@@ -6,16 +6,22 @@ Use Microsoft’s software download page:
 
 Create the ISO through the site’s flow (disk image section for x64 devices).
 
-## Confirm the file (example paths)
+The snippets below use **`$env:UserProfile`** and **`Join-Path`** so they work on any Windows account. Change the **`Downloads\Win11_x64.iso`** segment if your file name or folder differs.
 
 ```powershell
-Get-Item "C:\Users\YourName\Downloads\Win11_x64.iso" | Format-List Name, Length, LastWriteTime
+$Iso = Join-Path $env:UserProfile "Downloads\Win11_x64.iso"
+```
+
+## Confirm the file
+
+```powershell
+Get-Item -LiteralPath $Iso | Format-List Name, Length, LastWriteTime
 ```
 
 ## Optional: mount the ISO
 
 ```powershell
-Mount-DiskImage -ImagePath "C:\Users\YourName\Downloads\Win11_x64.iso"
+Mount-DiskImage -ImagePath $Iso
 Get-Volume | Where-Object FileSystemLabel -match "CCCOMA" | Format-List DriveLetter, FileSystemLabel
 ```
 
@@ -24,5 +30,5 @@ Note the drive letter (for example `F:`). MicroWin will need `F:\sources\install
 Unmount when finished:
 
 ```powershell
-Dismount-DiskImage -ImagePath "C:\Users\YourName\Downloads\Win11_x64.iso"
+Dismount-DiskImage -ImagePath $Iso
 ```
