@@ -24,7 +24,7 @@ These map to typical Ally X components and match what you already validated on *
 | Graphics | **AMD Graphics** | Large; can be installed post-setup instead if you prefer smaller WIM. |
 | Wireless | **MediaTek WLAN** (+ BT in same drop often) | Wi‑Fi / BT. |
 | USB LAN | **Realtek LAN** | USB Ethernet dongle class drivers (`RTL8153B` family on many Ally docs). |
-| Fingerprint | **FOCAL** (WBF) | If your unit uses Focal (common). |
+| Fingerprint | **FOCAL** *or* **EGIS** | **RC72LA ships two SKUs** — see [troubleshooting-fingerprint.md](troubleshooting-fingerprint.md). Wrong package = no `Biometric` device in PnP. |
 | Motion | **Bosch G-sensor** | Accelerometer. |
 | Audio | **Realtek Audio** + **Cirrus SmartAMP** | Speaker / jack stack; add if missing from your `C:\DRIVERS`. |
 | Card reader | **XG Mobile** Genesys + optional **internal SD** Genesys package | Different chips; add the one your device needs. |
