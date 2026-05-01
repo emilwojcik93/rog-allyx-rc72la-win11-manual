@@ -6,6 +6,38 @@
   }
 }
 
+/* Intro copy under the page title (before first H2): smaller than default body */
+.md-content .md-typeset > h1 ~ p {
+  font-size: clamp(0.72rem, 0.62rem + 0.22vw, 0.9rem);
+  line-height: 1.55;
+}
+
+.md-content .md-typeset > h2 ~ p {
+  font-size: revert;
+  line-height: revert;
+}
+
+/* Subtle hover feedback on top chrome (pointer devices only) */
+@media (hover: hover) {
+  .md-header {
+    transition: box-shadow 0.2s ease, filter 0.18s ease;
+  }
+
+  .md-header:hover {
+    filter: brightness(1.05);
+    box-shadow: 0 0.12rem 0.55rem rgba(0, 0, 0, 0.14);
+  }
+
+  .md-tabs {
+    transition: box-shadow 0.2s ease, background-color 0.18s ease;
+  }
+
+  .md-tabs:hover,
+  body:has(.md-header:hover) .md-tabs {
+    box-shadow: 0 0.2rem 0.55rem rgba(0, 0, 0, 0.12);
+  }
+}
+
 /*
   Footer nav type: rem + cqw (container query width) so title font tracks
   each half-width cell. Titles live in .md-ellipsis (Material); keep one line.
