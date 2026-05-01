@@ -1,13 +1,28 @@
 # Ally X Lean Win11
 
-Readable site (after you enable GitHub Pages from Actions on `main`): **https://emilwojcik93.github.io/rog-allyx-rc72la-win11-manual/**
+**Live docs:** https://emilwojcik93.github.io/rog-allyx-rc72la-win11-manual/
 
-Sources live in [`docs/`](docs/). Edit there, or preview locally:
+Sources live in [`docs/`](docs/). Edit there, or preview locally (PowerShell: use the call operator `&` if `python` is not on `PATH`):
 
 ```powershell
-pip install -r requirements-docs.txt
-mkdocs serve
+cd C:\DRIVERS\rog-allyx-rc72la-win11-manual
+& "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe" -m pip install -r requirements-docs.txt
+& "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe" -m mkdocs serve
 ```
+
+Open **http://127.0.0.1:8000/rog-allyx-rc72la-win11-manual/** (subpath matches GitHub Pages). To serve at the site root instead, temporarily comment out `site_url` in `mkdocs.yml` while editing locally.
+
+Optional: add **Python** and **Python\\Scripts** to your user `PATH` so `python` and `mkdocs` work without full paths.
+
+## Publish on GitHub Pages (first time)
+
+1. Push the latest `main` (includes `.github/workflows/docs.yml`).
+2. On GitHub: **Settings** → **Pages** → **Build and deployment**.
+3. Under **Source**, choose **GitHub Actions** (not “Deploy from a branch”).
+4. Open **Actions**, select **Publish docs**, confirm the workflow is **green**. If GitHub asks to approve the **`github-pages`** environment, approve it once.
+5. After deploy, the site is at **https://emilwojcik93.github.io/rog-allyx-rc72la-win11-manual/** (can take a minute to refresh).
+
+Every push to `main` rebuilds and redeploys. You can also run the workflow manually: **Actions** → **Publish docs** → **Run workflow**.
 
 This is a **minimal** path: custom USB install (not Cloud Recovery), **[G-Helper](https://github.com/seerge/g-helper)** as the ASUS control surface. **Armoury Crate**, **MyASUS**, and **Snappy-style** bulk driver installers are intentionally out of scope here.
 
