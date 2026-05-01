@@ -9,12 +9,15 @@ This repository documents a **repeatable, command-by-command** workflow to:
 3. Download **ASUS** driver packages for **ROG Ally X RC72LA**, inject them offline with **DISM**, and deploy **`install.wim`** to a USB stick (**`E:\`** in examples).
 4. Finish setup on the handheld using **[G-Helper](https://github.com/seerge/g-helper)** for power, LEDs, fan/GPU modes, and driver update discovery — **not** Armoury Crate / MyASUS.
 
+**Why inject drivers?** The factory **ASUS Cloud Recovery** image is tuned for this hardware. Any other source (retail ISO, MicroWin, etc.) can hit **“Windows Setup could not install one or more boot-critical drivers”** at the **start** of Setup unless **WinPE / Setup** sees the right packages — service **`install.wim`** and usually **`sources\boot.wim`** (see [04-dism-offline-drivers.md](docs/04-dism-offline-drivers.md)).
+
 **Target hardware (verified in local audit):**
 
 | Field | Value |
 |--------|--------|
 | Model | ASUS **ROG Ally X** `RC72LA_RC72LA` |
 | SoC | AMD **Ryzen Z1 Extreme** |
+| OEM Windows | Ally X is sold with **Windows 11 Home**; this manual uses **Pro** (your license / image choice). |
 | OS baseline | Windows 11 Pro **build 26200** (example from deployed unit) |
 
 **Security**

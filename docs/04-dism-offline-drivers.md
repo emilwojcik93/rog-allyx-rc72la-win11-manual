@@ -1,5 +1,7 @@
 # Step 4 — Offline driver injection into `install.wim` (DISM / PowerShell)
 
+Without driver injection (or a vendor-tuned image like **ASUS Cloud Recovery**), Setup from a **generic** Windows 11 USB often fails at the **beginning** with **boot-critical drivers** errors on ROG Ally X class hardware. Servicing **`install.wim`** fixes the **installed** OS copy; servicing **`boot.wim`** (§4.6) fixes **early Setup / WinPE** when the error appears before disk selection.
+
 All commands below assume:
 
 - **Source WIM:** `C:\Users\ewojcik\Downloads\microwin-win11-pro\sources\install.wim` (adjust to your extracted MicroWin path or the path MicroWin wrote under `%TEMP%`).

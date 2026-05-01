@@ -1,5 +1,15 @@
 # Step 3 — ASUS drivers for ROG Ally X (RC72LA)
 
+## Why this step exists (cloud recovery vs your USB / Pro image)
+
+**ASUS Cloud Recovery** applies an image that already matches ROG handheld hardware. If you install from **any other source** (Microsoft ISO, **MicroWin**, modified `install.wim`, another PC’s image), Windows Setup / WinPE may stop early with:
+
+> **Windows Setup could not install one or more boot-critical drivers.**
+
+That message is common when **WinPE** does not load the right **chipset / USB / storage / HID** stack for this device **before** the full OS is laid down. **Injecting ASUS + AMD + MediaTek (etc.) drivers** into **`install.wim`** and (when needed) **`sources\boot.wim`** avoids relying on Cloud Recovery. See [04-dism-offline-drivers.md](04-dism-offline-drivers.md) §4.6.
+
+**Edition note:** Ally X ships with **Windows 11 Home**; using **Pro** does not remove this requirement — you still need the same hardware drivers in the image or in PE.
+
 ## Pick the correct support page
 
 Your handheld inventory reports:
