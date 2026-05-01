@@ -1,5 +1,7 @@
 # ROG Ally X (RC72LA) — manual debloated Windows 11 install
 
+**Repository:** [github.com/emilwojcik93/rog-allyx-rc72la-win11-manual](https://github.com/emilwojcik93/rog-allyx-rc72la-win11-manual)
+
 This repository documents a **repeatable, command-by-command** workflow to:
 
 1. Obtain a legitimate **Windows 11** x64 image from Microsoft.
