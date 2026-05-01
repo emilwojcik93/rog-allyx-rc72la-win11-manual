@@ -1,47 +1,43 @@
-# ROG Ally X (RC72LA) — manual debloated Windows 11 install
+# Ally X Lean Win11
 
-**Repository:** [github.com/emilwojcik93/rog-allyx-rc72la-win11-manual](https://github.com/emilwojcik93/rog-allyx-rc72la-win11-manual)
+Readable site (after you enable GitHub Pages from Actions on `main`): **https://emilwojcik93.github.io/rog-allyx-rc72la-win11-manual/**
 
-This repository documents a **repeatable, command-by-command** workflow to:
+Sources live in [`docs/`](docs/). Edit there, or preview locally:
 
-1. Obtain a legitimate **Windows 11** x64 image from Microsoft.
-2. Build a **MicroWin**-style image using the **[CodingWonders/MicroWin](https://github.com/CodingWonders/MicroWin)** project (continuation of MicroWin after removal from WinUtil).
-3. Download **ASUS** driver packages for **ROG Ally X RC72LA**, inject them offline with **DISM**, and deploy **`install.wim`** to a USB stick (**`E:\`** on the PC — on the Ally you need **USB-C** media, a **C→A adapter**, or a dock such as **Dell UD22**; see [docs/00-prerequisites.md](docs/00-prerequisites.md)).
-4. Finish setup on the handheld using **[G-Helper](https://github.com/seerge/g-helper)** for power, LEDs, fan/GPU modes, and driver update discovery — **not** Armoury Crate / MyASUS.
+```powershell
+pip install -r requirements-docs.txt
+mkdocs serve
+```
 
-**Why inject drivers?** The factory **ASUS Cloud Recovery** image is tuned for this hardware. Any other source (retail ISO, MicroWin, etc.) can hit **“Windows Setup could not install one or more boot-critical drivers”** at the **start** of Setup unless **WinPE / Setup** sees the right packages — service **`install.wim`** and usually **`sources\boot.wim`** (see [04-dism-offline-drivers.md](docs/04-dism-offline-drivers.md)).
+This is a **minimal** path: custom USB install (not Cloud Recovery), **[G-Helper](https://github.com/seerge/g-helper)** as the ASUS control surface. **Armoury Crate**, **MyASUS**, and **Snappy-style** bulk driver installers are intentionally out of scope here.
 
-**Target hardware (verified in local audit):**
+## What you will do
 
-| Field | Value |
-|--------|--------|
-| Model | ASUS **ROG Ally X** `RC72LA_RC72LA` |
-| SoC | AMD **Ryzen Z1 Extreme** |
-| OEM Windows | Ally X is sold with **Windows 11 Home**; this manual uses **Pro** (your license / image choice). |
-| OS baseline | Windows 11 Pro **build 26200** (example from deployed unit) |
+1. Obtain a legitimate **Windows 11 x64** image from Microsoft: [Download Windows 11](https://www.microsoft.com/en-us/software-download/windows11).
+2. Build a **MicroWin**-style image with **[CodingWonders/MicroWin](https://github.com/CodingWonders/MicroWin)** (continuation after MicroWin left WinUtil):
 
-**Security**
+   ```powershell
+   powershell -ExecutionPolicy Bypass -Command "iwr -useb https://raw.githubusercontent.com/CodingWonders/MicroWin/refs/heads/main/Microwin.ps1 | iex"
+   ```
 
-- Do **not** commit product keys, `winget.json` with secrets, or SSH private keys.
-- If a **GitHub PAT** was ever pasted into a chat or log, **revoke and rotate** it in GitHub immediately.
+   Prefer the **release build** from the project page if you do not want `irm` / `iex` from raw GitHub.
 
-**Repository layout**
+3. Prepare **ASUS** driver folders under `C:\DRIVERS`, inject with **DISM** into `install.wim` (and `boot.wim` if needed), copy the serviced WIM to USB. See the numbered docs below.
 
-| Path | Purpose |
-|------|---------|
-| [docs/00-prerequisites.md](docs/00-prerequisites.md) | Disk space, admin PowerShell, paths |
-| [docs/01-download-windows11.md](docs/01-download-windows11.md) | Official ISO acquisition |
-| [docs/02-build-microwin.md](docs/02-build-microwin.md) | MicroWin .NET build from source/release |
-| [docs/03-drivers-asus.md](docs/03-drivers-asus.md) | Driver list + ASUS download notes |
+**Why inject drivers?** Factory **ASUS Cloud Recovery** already matches this hardware. A retail or MicroWin image can stop at the start of Setup with **boot-critical drivers** unless **WinPE / Setup** sees the right packages in **`install.wim`** and often **`sources\boot.wim`**.
+
+## Doc map
+
+| Doc | Topic |
+|-----|--------|
+| [docs/00-prerequisites.md](docs/00-prerequisites.md) | Disk space, admin PowerShell, USB-C media, BIOS chord |
+| [docs/01-download-windows11.md](docs/01-download-windows11.md) | Official ISO |
+| [docs/02-build-microwin.md](docs/02-build-microwin.md) | MicroWin build and USB creation |
+| [docs/03-drivers-asus.md](docs/03-drivers-asus.md) | Minimal driver set, extract layout, skips |
 | [docs/04-dism-offline-drivers.md](docs/04-dism-offline-drivers.md) | Mount `install.wim`, `Add-WindowsDriver`, save |
-| [docs/05-usb-deploy.md](docs/05-usb-deploy.md) | Replace `E:\sources\install.wim`, optional `boot.wim` |
-| [docs/06-post-install.md](docs/06-post-install.md) | G-Helper, WinUtil automation, SSH host `ally-ewojcik` |
-| [docs/07-remote-audit-summary.md](docs/07-remote-audit-summary.md) | Pointer to local audit artifacts |
-| [docs/references.md](docs/references.md) | External guides and tools |
-| [docs/troubleshooting-fingerprint.md](docs/troubleshooting-fingerprint.md) | Focal vs Egis fingerprint, “no scanner” fix |
-| [docs/troubleshooting-driver-store-rapr.md](docs/troubleshooting-driver-store-rapr.md) | Driver Store Explorer (RAPR), `winget`, force remove (e.g. Dolby) |
-
-**Out of scope (by design)**
-
-- **Snappy Driver** / similar bulk driver installers — skipped; vendor mix caused issues; **G-Helper** + ASUS + Windows Update is enough.
-- **Armoury Crate / MyASUS** as the primary control plane — replaced by **G-Helper** for day-to-day use.
+| [docs/05-usb-deploy.md](docs/05-usb-deploy.md) | Replace `E:\sources\install.wim` |
+| [docs/06-post-install.md](docs/06-post-install.md) | G-Helper, WinUtil, optional OpenSSH |
+| [winget.json](winget.json) | WinUtil automation IDs ([docs/winget-profile.md](docs/winget-profile.md)) |
+| [docs/references.md](docs/references.md) | External links |
+| [docs/troubleshooting-fingerprint.md](docs/troubleshooting-fingerprint.md) | Focal vs Egis |
+| [docs/troubleshooting-driver-store-rapr.md](docs/troubleshooting-driver-store-rapr.md) | RAPR, Dolby cleanup |

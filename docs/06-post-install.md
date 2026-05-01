@@ -1,54 +1,48 @@
-# Step 6 — After Windows is on the Ally X (RC72LA)
+# Step 6 - After Windows is on the Ally X (RC72LA)
 
-## 6.1 G-Helper (primary control plane)
+## 6.1 G-Helper
 
-Use **[G-Helper](https://github.com/seerge/g-helper)** for:
+Use **[G-Helper](https://github.com/seerge/g-helper)** for performance modes, GPU modes, fan curves, charge cap, display refresh, LEDs where supported, and **driver / BIOS links** for your model. Install **ASUS System Control Interface v3** from ASUS if G-Helper reports it missing.
 
-- Performance modes (**Silent / Balanced / Turbo**) aligned with BIOS.
-- GPU modes (Eco / Standard / Ultimate / Optimized where supported).
-- Fan curves, power limits, battery charge cap, display refresh, LEDs / matrix where applicable.
-- **Driver and BIOS update links** resolved from the official ASUS site for your model.
+## 6.2 Apps and tweaks (winget or WinUtil only)
 
-G-Helper is **not** a kernel replacement; it drives the same **ASUS System Control Interface** class stack Armoury uses. Install **ASUS System Control Interface v3** from ASUS if G-Helper reports it missing.
+- **Individual packages:** prefer **`winget install …`** for well-known IDs.
+- **Bulk tweaker / installer profile:** use **WinUtil** with a JSON config. See [winget-profile.md](winget-profile.md) for this repo’s exported list and drift warning.
 
-## 6.2 WinUtil automation (your saved profile)
+Automation docs: [WinUtil - Automation](https://winutil.christitus.com/userguide/automation/).
 
-Chris Titus **WinUtil** supports applying a saved JSON:
-
-Documentation: [WinUtil — Automation](https://winutil.christitus.com/userguide/automation/)
-
-**Review / dry run (no apply):**
+Dry run (no apply):
 
 ```powershell
-& ([ScriptBlock]::Create((irm "https://christitus.com/win"))) -Config "C:\Path\To\Config.json"
+& ([ScriptBlock]::Create((irm "https://christitus.com/win"))) -Config "C:\path\to\your-config.json"
 ```
 
-**Apply:**
+Apply:
 
 ```powershell
-& ([ScriptBlock]::Create((irm "https://christitus.com/win"))) -Config "C:\Path\To\Config.json" -Run
+& ([ScriptBlock]::Create((irm "https://christitus.com/win"))) -Config "C:\path\to\your-config.json" -Run
 ```
 
-Keep `Config.json` **private** if it encodes aggressive removals (Edge, Defender tweaks, etc.). Do **not** commit secrets to this repo.
+Keep personal configs **private** if they encode aggressive removals.
 
-## 6.3 SSH access (`ally-ewojcik`)
+## 6.3 Optional: OpenSSH Server
 
-You renamed the device and use SSH for administration.
+Not required for this guide. If you want remote PowerShell over SSH, enable **OpenSSH Server** (and firewall rules) through **WinUtil** optional features / tweaks rather than ad-hoc downloads. See WinUtil’s UI and documentation for the current toggle names.
 
-- Prefer **key-based** auth; for **admin** accounts on Windows OpenSSH, remember **`administrators_authorized_keys`** under `C:\ProgramData\ssh\` may be required (see your local audit notes).
-- Audit artifacts from a previous investigation live under:
+## 6.4 Name and address on the LAN
 
-`C:\DRIVERS\remote-audit\`
+Windows may show a **default computer name** until you change it under **Settings → System → About**.
 
-…including `AI-CONTEXT.md` and `remote-inventory-report.txt` (hostname **DESKTOP-VPB4O1D**, LAN **192.168.0.150** at time of audit — update if DHCP changes).
+To see this device’s **IPv4** on the network (for example from another PC on the same Wi-Fi), on the handheld open **Windows Terminal** and run:
 
-## 6.4 Debloat philosophy (optional reading)
+```powershell
+ipconfig
+```
 
-- [Bald Sea Lion — Windows OS Debloat](https://baldsealion.com/ROG-ALLY-Ultimate-Windows-Guide/Windows-OS-Debloat) — conservative take on custom ISOs; useful context even if you use MicroWin.
-- Community index: [mikeroyal/Asus-ROG-Ally-Guide](https://github.com/mikeroyal/Asus-ROG-Ally-Guide).
+Use the **Wireless LAN adapter Wi-Fi** IPv4 address. DHCP can change it after a lease renew.
 
-## 6.5 Next maintenance
+## 6.5 Maintenance
 
-1. BIOS / MCU / PD firmware from ASUS when release notes matter to you.
+1. BIOS / MCU / PD firmware from ASUS when release notes matter.
 2. **G-Helper → Updates** for driver deltas.
-3. **Windows Update** after install to pick up **.NET / security** payloads MicroWin may defer.
+3. **Windows Update** for security and runtime payloads deferred by MicroWin.

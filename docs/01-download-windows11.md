@@ -1,36 +1,28 @@
-# Step 1 — Download official Windows 11 (x64 ISO)
+# Step 1 - Download official Windows 11 (x64 ISO)
 
-Use Microsoft’s **software download** page for your locale (Polish example):
+Use Microsoft’s software download page:
 
-- [Download Windows 11 (Microsoft, pl-PL)](https://www.microsoft.com/pl-pl/software-download/windows11)
+- [Download Windows 11 (Microsoft, en-US)](https://www.microsoft.com/en-us/software-download/windows11)
 
-Under **“Pobierz obraz dysku z Windows 11 (ISO) dla urządzeń x64”** (or the English equivalent), pick:
+Create the ISO through the site’s flow (disk image section for x64 devices).
 
-- **Edition** that matches your license intent (e.g. **Windows 11** multi-edition ISO).
-- **Language** you will install (must match product/locale expectations).
-- **64-bit (x64)** — Ally X is **x64**, not Arm64.
-
-## Example: confirm the file
-
-After download (path is an example):
+## Confirm the file (example paths)
 
 ```powershell
-Get-Item "C:\Users\ewojcik\Downloads\Win11_25H2_Polish_x64.iso" | Format-List Name, Length, LastWriteTime
+Get-Item "C:\Users\YourName\Downloads\Win11_x64.iso" | Format-List Name, Length, LastWriteTime
 ```
 
-## Optional: mount ISO instead of extracting
+## Optional: mount the ISO
 
 ```powershell
-Mount-DiskImage -ImagePath "C:\Users\ewojcik\Downloads\Win11_25H2_Polish_x64.iso"
+Mount-DiskImage -ImagePath "C:\Users\YourName\Downloads\Win11_x64.iso"
 Get-Volume | Where-Object FileSystemLabel -match "CCCOMA" | Format-List DriveLetter, FileSystemLabel
 ```
 
-Note the **drive letter** of the mounted ISO (e.g. `F:`). You will point MicroWin at:
-
-`F:\sources\install.wim` (and the rest of `F:\` as the source layout).
+Note the drive letter (for example `F:`). MicroWin will need `F:\sources\install.wim` (and the rest of that layout).
 
 Unmount when finished:
 
 ```powershell
-Dismount-DiskImage -ImagePath "C:\Users\ewojcik\Downloads\Win11_25H2_Polish_x64.iso"
+Dismount-DiskImage -ImagePath "C:\Users\YourName\Downloads\Win11_x64.iso"
 ```

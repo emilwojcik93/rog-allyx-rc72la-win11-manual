@@ -1,67 +1,59 @@
-# Step 3 — ASUS drivers for ROG Ally X (RC72LA)
+# Step 3 - ASUS drivers for ROG Ally X (RC72LA)
 
-## Why this step exists (cloud recovery vs your USB / Pro image)
+## Why inject anything
 
-**ASUS Cloud Recovery** applies an image that already matches ROG handheld hardware. If you install from **any other source** (Microsoft ISO, **MicroWin**, modified `install.wim`, another PC’s image), Windows Setup / WinPE may stop early with:
+**ASUS Cloud Recovery** ships an image that already matches the handheld. A **retail or MicroWin** USB can fail early with **Windows Setup could not install one or more boot-critical drivers** if **WinPE / Setup** does not load the right stack before the OS is applied. Offline injection into **`install.wim`** (and **`sources\boot.wim`** when needed) fixes that. Details: [04-dism-offline-drivers.md](04-dism-offline-drivers.md).
 
-> **Windows Setup could not install one or more boot-critical drivers.**
+## Where `C:\DRIVERS` comes from
 
-That message is common when **WinPE** does not load the right **chipset / USB / storage / HID** stack for this device **before** the full OS is laid down. **Injecting ASUS + AMD + MediaTek (etc.) drivers** into **`install.wim`** and (when needed) **`sources\boot.wim`** avoids relying on Cloud Recovery. See [04-dism-offline-drivers.md](04-dism-offline-drivers.md) §4.6.
+Download **ZIP** packages from **ASUS support** for **ROG Ally X RC72LA** (pick your region; product selector must match **Ally X**, not the older Ally SKU):
 
-**Edition note:** Ally X ships with **Windows 11 Home**; using **Pro** does not remove this requirement — you still need the same hardware drivers in the image or in PE.
+- [ROG Ally - Helpdesk (download hub, US)](https://rog.asus.com/us/gaming-handhelds/rog-ally/rog-ally-2023/helpdesk_download/)
 
-## Pick the correct support page
+Extract each ZIP, then run the vendor **`Setup.exe`** (or equivalent). In the wizard choose **Extract**, not **Install**. The tool will create a subfolder under `C:\DRIVERS` automatically, for example:
 
-Your handheld inventory reports:
+`C:\DRIVERS\DolbyAtmosdriverforROG_TUF_ASUS_Z_V3.30704.742`
 
-- **Manufacturer / model:** ASUSTeK **ROG Ally X** `RC72LA_RC72LA`
+Point **DISM** at the parent `C:\DRIVERS` (or a cleaned copy) so all extracted `.inf` trees are visible.
 
-Always download from the **ROG Ally X (RC72LA)** helpdesk, **not** from ROG Ally (2023) **RC71L** unless you intentionally target that older device.
+## Minimal set for the image (DISM)
 
-Open ASUS support → **Driver & Tools** → **Windows 11 64-bit** → download **ZIP** packages and extract each into `C:\DRIVERS\` (one folder per package is fine).
+Keep the offline folder **small and safe**:
 
-Polish site tree example (select **your** exact model in the selector):
+| Priority | Package (typical name on ASUS site) | Notes |
+|----------|----------------------------------------|--------|
+| Required | **AMD Chipset** (DriverOnly tree) | Strip **PMF** and MSI noise first (below). |
+| Required | **MediaTek WLAN** (often includes BT) | Wi-Fi for Setup and first boot. |
 
-- [ROG handhelds — ASUS Poland](https://rog.asus.com/pl/gaming-handhelds/rog-ally/rog-ally-2023/helpdesk_download/) — **example only**; switch the product to **Ally X / RC72LA** in the UI.
+Everything else (AMD graphics, audio, Realtek USB LAN, motion, card reader, controller INFs, BIOS-facing tools) can usually wait for **[G-Helper](https://github.com/seerge/g-helper)** and **Windows Update** after install, unless you already know you need them in PE.
 
-## Required / strongly recommended driver packages (for offline DISM)
+## Fingerprint (do not blind-inject)
 
-These map to typical Ally X components and match what you already validated on **build 26200**:
+**RC72LA** can ship **FocalTech** or **EgisTec** sensors. The wrong INF tree stages but **does not bind** (no **Biometric** class device). **Do not** guess both vendors into the WIM unless you accept bloat and cleanup later.
 
-| Category | Typical ASUS package | Notes |
-|----------|----------------------|--------|
-| Chipset | **AMD Chipset** (DriverOnly) | Core GPIO / I2C / PSP / MicroPEP / SFH — **exclude** failing PMF folder if present (see DISM doc). |
-| Graphics | **AMD Graphics** | Large; can be installed post-setup instead if you prefer smaller WIM. |
-| Wireless | **MediaTek WLAN** (+ BT in same drop often) | Wi‑Fi / BT. |
-| USB LAN | **Realtek LAN** | USB Ethernet dongle class drivers (`RTL8153B` family on many Ally docs). |
-| Fingerprint | **FOCAL** *or* **EGIS** | **RC72LA ships two SKUs** — see [troubleshooting-fingerprint.md](troubleshooting-fingerprint.md). Wrong package = no `Biometric` device in PnP. |
-| Motion | **Bosch G-sensor** | Accelerometer. |
-| Audio | **Realtek Audio** + **Cirrus SmartAMP** | Speaker / jack stack; add if missing from your `C:\DRIVERS`. |
-| Card reader | **XG Mobile** Genesys + optional **internal SD** Genesys package | Different chips; add the one your device needs. |
-| Controller | **ROG Raikiri / GD300** INF | If listed for your SKU. |
-| Optional | **Dolby Atmos** (INF subtree) | Only if you want Dolby in the image; your verbose run showed `dax3_*.inf` adding successfully. |
+- Prefer: install the correct **FOCAL** or **EGIS** package **after** Windows is up, from the same ASUS page, then remove orphans with **RAPR** if needed. See [troubleshooting-fingerprint.md](troubleshooting-fingerprint.md).
 
-## Do **not** feed these through `Add-WindowsDriver` as folders
+## Skip or delete before `Add-WindowsDriver`
 
-- **Armoury Crate** / **MyASUS** / **GlideX** installers — applications; install later or skip in favor of **G-Helper**.
-- **MCU / PD firmware “tools”** — run from a working OS or BIOS workflow, not as DISM driver folders.
-- **PMF (Platform Management Framework)** — `amdpmf.inf` from **PMF_7040Series** repeatedly **failed** offline on your image; **delete that subfolder** before `Add-WindowsDriver`, or skip PMF entirely (handheld works without it in the WIM for most setups).
+| Item | Reason |
+|------|--------|
+| **`PMF_7040Series`** / `amdpmf.inf` | Known **Add-WindowsDriver** failure on some MicroWin images; handheld can run without PMF in the WIM. |
+| **`ROGScreenManager`**, **`Package`**, **`Install.bat`** | Apps / launchers, not bare class drivers. |
+| **Dolby Atmos** driver bundle (optional) | Often fine, but if it causes store clutter or bad pairs, install later or remove with [RAPR](troubleshooting-driver-store-rapr.md). |
 
-## Clean `C:\DRIVERS` before DISM
-
-Remove from the **AMD Chipset** tree if present:
-
-- `PMF_7040Series Driver\` (contains `amdpmf.inf` — known **failure** on your MicroWin `install.wim`).
-- `ROGScreenManager\` (MSI app).
-- `Package\` (MSI).
-- `Install.bat` (launcher only).
-
-Example (paths vary by extracted folder name):
+Example removal (adjust folder names to match your extract):
 
 ```powershell
 Remove-Item -LiteralPath "C:\DRIVERS\<ChipsetFolder>\PMF_7040Series Driver" -Recurse -Force -ErrorAction SilentlyContinue
 ```
 
-## Snappy Driver (explicitly out of scope)
+## Driver store cleanup
 
-**Do not** use Snappy-style bulk installers for this project — they pull unrelated packages and conflict with ASUS-class devices. Use **DISM + ASUS zips + G-Helper** updates instead.
+**[Driver Store Explorer (RAPR)](https://github.com/lostindark/DriverStoreExplorer)** removes stuck packages (wrong fingerprint vendor, Dolby, duplicates). Install and launch:
+
+```powershell
+winget install lostindark.DriverStoreExplorer --accept-source-agreements --accept-package-agreements
+rapr
+```
+
+Full workflow: [troubleshooting-driver-store-rapr.md](troubleshooting-driver-store-rapr.md).

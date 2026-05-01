@@ -22,3 +22,6 @@ microwin-mount/
 # OS junk
 Thumbs.db
 Desktop.ini
+
+# MkDocs output (published by GitHub Actions)
+site/
