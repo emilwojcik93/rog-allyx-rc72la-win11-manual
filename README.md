@@ -35,6 +35,7 @@ This repository documents a **repeatable, command-by-command** workflow to:
 | [docs/06-post-install.md](docs/06-post-install.md) | G-Helper, WinUtil automation, SSH host `ally-ewojcik` |
 | [docs/07-remote-audit-summary.md](docs/07-remote-audit-summary.md) | Pointer to local audit artifacts |
 | [docs/references.md](docs/references.md) | External guides and tools |
+| [docs/troubleshooting-fingerprint.md](docs/troubleshooting-fingerprint.md) | Focal vs Egis fingerprint, “no scanner” fix |
 
 **Out of scope (by design)**
 
