@@ -67,9 +67,14 @@
   line-height: 1.25;
 }
 
-.md-footer__link--next {
-  flex-direction: row-reverse;
+/* Prev: DOM = icon, title → keep left. Next: DOM = title, icon → pack both to the right (do NOT use row-reverse: it pins the wrong edge and separates icon from text). */
+.md-footer__link--prev {
   justify-content: flex-start;
+}
+
+.md-footer__link--next {
+  flex-direction: row;
+  justify-content: flex-end;
 }
 
 .md-footer__title {
