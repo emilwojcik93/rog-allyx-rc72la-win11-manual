@@ -16,13 +16,17 @@ Optional: add **Python** and **Python\\Scripts** to your user `PATH` so `python`
 
 ## Publish on GitHub Pages (first time)
 
-1. Push the latest `main` (includes `.github/workflows/docs.yml`).
-2. On GitHub: **Settings** → **Pages** → **Build and deployment**.
-3. Under **Source**, choose **GitHub Actions** (not “Deploy from a branch”).
-4. Open **Actions**, select **Publish docs**, confirm the workflow is **green**. If GitHub asks to approve the **`github-pages`** environment, approve it once.
+1. **Settings** → **Actions** → **General** → **Workflow permissions**: set **Read and write permissions**, then **Save**. If this stays on **Read** only, `actions/deploy-pages` cannot create a deployment (you may see **`Failed to create deployment (status: 404)`**). See [GitHub token permissions](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token).
+2. Push the latest `main` (includes `.github/workflows/docs.yml`).
+3. **Settings** → **Pages** → **Build and deployment** → **Source** → **GitHub Actions** (not “Deploy from a branch”).
+4. Open **Actions** → **Publish docs** → confirm the run is **green**. If GitHub asks to approve the **`github-pages`** environment, approve it once.
 5. After deploy, the site is at **https://emilwojcik93.github.io/rog-allyx-rc72la-win11-manual/** (can take a minute to refresh).
 
 Every push to `main` rebuilds and redeploys. You can also run the workflow manually: **Actions** → **Publish docs** → **Run workflow**.
+
+### Deploy error: `404` / `Failed to create deployment`
+
+Almost always **Workflow permissions** (step 1 above). Fix that, then **Actions** → failed run → **Re-run all jobs**. OIDC subject-claim settings do not need changing for this workflow.
 
 This is a **minimal** path: custom USB install (not Cloud Recovery), **[G-Helper](https://github.com/seerge/g-helper)** as the ASUS control surface. **Armoury Crate**, **MyASUS**, and **Snappy-style** bulk driver installers are intentionally out of scope here.
 
