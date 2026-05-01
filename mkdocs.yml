@@ -4,6 +4,11 @@ site_url: https://emilwojcik93.github.io/rog-allyx-rc72la-win11-manual/
 repo_url: https://github.com/emilwojcik93/rog-allyx-rc72la-win11-manual
 edit_uri: edit/main/docs/
 
+extra_css:
+  - stylesheets/extra.css
+extra_javascript:
+  - javascripts/header-hide-on-scroll.js
+
 theme:
   name: material
   palette:
@@ -21,8 +26,6 @@ theme:
     - navigation.tracking
     # Bottom of page: previous / next doc in nav order (uses page titles from `nav`).
     - navigation.footer
-    # Top tabs stay visible while scrolling (main sections always one click away).
-    - navigation.tabs.sticky
     - content.code.copy
     - search.suggest
 
